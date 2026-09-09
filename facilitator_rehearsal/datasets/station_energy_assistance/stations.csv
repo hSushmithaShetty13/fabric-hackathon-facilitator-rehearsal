@@ -1,0 +1,9 @@
+StationID,StationName,RegionID,StationType,HasStepFreeAccess,ManagedBy
+ST001,  Manchester Central ,R01,Major,True,Network Rail
+ST002,liverpool exchange,R01,Regional,True,Partner
+ST003,Leeds City,R02,Major,True,Network Rail
+ST004,Norwich Victoria,R02,Regional,False,Partner
+ST005,Cardiff Riverside,R03,Major,True,Network Rail
+ST006,Bristol Parkway,R03,Regional,True,Partner
+ST007,Brighton Junction,R04,Major,True,Network Rail
+ST008,Reading Westgate,R04,Regional,False,Partner

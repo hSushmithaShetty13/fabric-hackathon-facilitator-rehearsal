@@ -1,0 +1,24 @@
+# Microsoft Fabric Facilitator Rehearsal Pack
+
+This repository contains a facilitator-only rehearsal dataset for testing the hackathon flow before participants use the main scenarios.
+
+The scenario is intentionally separate from the participant datasets: it focuses on station energy usage and passenger assistance demand, not rail performance, safety incidents, track possessions, or fleet operations.
+
+## Contents
+
+- `facilitator_rehearsal\datasets\station_energy_assistance\` - synthetic CSV dataset
+- `facilitator_rehearsal\quick-test-guide.md` - fastest way to validate the end-to-end Fabric build
+- `facilitator_rehearsal\data-dictionary.md` - table descriptions, joins, quirks, and suggested measures
+- `tools\generate_station_energy_assistance.py` - deterministic dataset generator
+
+## Rehearsal goal
+
+Build a small but complete Fabric solution:
+
+1. Land the raw CSV files in a Lakehouse.
+2. Transform them into clean tables.
+3. Create a semantic model with relationships and a few measures.
+4. Build a Power BI report with KPI, diagnostics, and detail pages.
+5. Optionally use Copilot in a notebook or Power BI to accelerate part of the workflow.
+
+The data is synthetic and deliberately imperfect, so it is safe for rehearsal and useful for testing cleaning, modelling, and reporting choices.
