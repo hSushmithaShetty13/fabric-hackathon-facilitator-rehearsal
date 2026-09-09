@@ -1,0 +1,4 @@
+TariffBand,RatePerKwh,StandingChargePerDay,AppliesTo
+Standard,0.24,18.5,All stations
+Peak,0.38,18.5,Weekday peak consumption
+Green,0.21,20.0,Stations with green contract

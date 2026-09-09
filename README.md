@@ -6,12 +6,23 @@ The scenario is intentionally separate from the participant datasets: it focuses
 
 ## Contents
 
-- `facilitator_rehearsal\datasets\station_energy_assistance\` - synthetic CSV dataset
+- `facilitator_rehearsal\datasets\calendar.csv` - shared calendar
+- `facilitator_rehearsal\datasets\station_energy_assistance\` - six synthetic scenario CSVs
 - `facilitator_rehearsal\quick-test-guide.md` - fastest way to validate the end-to-end Fabric build
 - `facilitator_rehearsal\data-dictionary.md` - table descriptions, joins, quirks, and suggested measures
 - `tools\generate_station_energy_assistance.py` - deterministic dataset generator
 
-## Rehearsal goal
+## Clear goal
+
+Build a Fabric report that identifies the **three stations where operations should intervene first** because they combine high energy cost, high passenger volume, poor assistance SLA fulfilment, or unresolved asset work orders.
+
+The desired end result is a stakeholder-ready Power BI report with:
+
+- A ranked station intervention list.
+- The reason each station is ranked highly.
+- Recommended actions, such as investigate metering, review staffing, or prioritise asset repairs.
+
+## Rehearsal flow
 
 Build a small but complete Fabric solution:
 
