@@ -144,6 +144,43 @@ The rehearsal is successful if you can:
 - Demo the result in five minutes.
 - Optionally publish the report as a Fabric Org App and open it as a consumer.
 
+## Facilitator answer key
+
+Use these values to confirm that the extra station scenario is working end to end.
+
+Assumptions: estimated energy cost is `EnergyKwh * RatePerKwh`; SLA fulfilment is `FulfilledWithinSla / RequestCount`; intervention score uses the weighting in `notebooks\station_ops_medallion_notebook.py`.
+
+### KPI checks
+
+| KPI | Expected answer |
+|---|---:|
+| Station daily rows | 224 |
+| Total estimated energy cost | 100,351.7 |
+| Total passengers | 3,892,181 |
+| Assistance requests | 2,798 |
+| SLA fulfilment | 78.4% |
+| Open assistance rows | 30 |
+| Asset work orders | 46 |
+| Open work orders | 8 |
+| Overdue work orders | 8 |
+| Bad station references | 1 |
+| Negative passenger rows | 1 |
+| Impossible SLA rows | 1 |
+
+### Business question answers
+
+| Question | Expected answer |
+|---|---|
+| Which three stations should operations focus on first? | 1. Leeds City, 2. Manchester Central, 3. Brighton Junction |
+| Why is Leeds City ranked first? | Intervention score 68.2; driven by open asset work orders, high assistance demand, and high energy intensity |
+| Why is Manchester Central ranked second? | Intervention score 67.1; driven by the highest assistance demand and high total energy cost |
+| Why is Brighton Junction ranked third? | Intervention score 59.4; driven by high assistance demand and high energy intensity |
+| Which stations have the highest total energy cost? | Cardiff Riverside: 19,998.0; Manchester Central: 19,600.5; Leeds City: 15,050.5 |
+| Which stations have the highest energy per 1,000 passengers? | Bristol Parkway: 118.9; Norwich Victoria: 117.1; Reading Westgate: 114.0 |
+| Which stations have the highest assistance demand? | Manchester Central: 624; Leeds City: 554; Cardiff Riverside: 538 |
+| Which request type is most common? | Luggage support, 801 requests |
+| Are there data-quality issues to prove the checks worked? | Yes: 1 bad station reference, 1 negative passenger row, 1 impossible SLA row, and 8 open work orders |
+
 ## Suggested Copilot prompts
 
 Use these only after the raw data is loaded.
