@@ -63,28 +63,38 @@ Suggested medallion layers:
 
 ### 3. Model
 
+Use the **Gold** tables in the semantic model. Do not add the Bronze or Silver tables unless you want a separate diagnostics-only model.
+
 Recommended relationships:
 
 | From | To | Relationship |
 |---|---|---|
-| `station_daily[StationID]` | `stations[StationID]` | Many-to-one |
-| `assistance_requests[StationID]` | `stations[StationID]` | Many-to-one |
-| `asset_workorders[StationID]` | `stations[StationID]` | Many-to-one |
-| `stations[RegionID]` | `regions[RegionID]` | Many-to-one |
-| `station_daily[TariffBand]` | `tariffs[TariffBand]` | Many-to-one |
-| All fact date columns | `calendar[Date]` | Many-to-one |
+| `fact_station_day[StationID]` | `dim_station[StationID]` | Many-to-one, single direction |
+| `fact_assistance_request[StationID]` | `dim_station[StationID]` | Many-to-one, single direction |
+| `fact_asset_workorder[StationID]` | `dim_station[StationID]` | Many-to-one, single direction |
+| `dim_station[RegionID]` | `dim_region[RegionID]` | Many-to-one, single direction |
+| `fact_station_day[TariffBand]` | `dim_tariff[TariffBand]` | Many-to-one, single direction |
+| `fact_station_day[Date]` | `dim_calendar[Date]` | Many-to-one, single direction |
+| `fact_assistance_request[Date]` | `dim_calendar[Date]` | Many-to-one, single direction |
+| `fact_asset_workorder[OpenedDate]` | `dim_calendar[Date]` | Many-to-one, single direction; keep inactive if you also add `TargetDate` or `CompletedDate` |
+
+Optional report-ready table:
+
+| From | To | Relationship |
+|---|---|---|
+| `gold_station_intervention_score[StationID]` | `dim_station[StationID]` | Many-to-one, single direction |
 
 Useful starter measures:
 
 ```DAX
-Total Energy kWh = SUM(station_daily[EnergyKwh])
-Total Passengers = SUM(station_daily[PassengerCount])
+Total Energy kWh = SUM(fact_station_day[EnergyKwh])
+Total Passengers = SUM(fact_station_day[PassengerCount])
 Energy per 1k Passengers = DIVIDE([Total Energy kWh], [Total Passengers]) * 1000
-Estimated Energy Cost = SUMX(station_daily, station_daily[EnergyKwh] * RELATED(tariffs[RatePerKwh]))
-Assistance Requests = SUM(assistance_requests[RequestCount])
-SLA Fulfilment % = DIVIDE(SUM(assistance_requests[FulfilledWithinSla]), [Assistance Requests])
-Open Requests = COUNTROWS(FILTER(assistance_requests, ISBLANK(assistance_requests[ClosedTimestamp])))
-Open Work Orders = COUNTROWS(FILTER(asset_workorders, ISBLANK(asset_workorders[CompletedDate])))
+Estimated Energy Cost = SUM(fact_station_day[EstimatedEnergyCost])
+Assistance Requests = SUM(fact_assistance_request[RequestCount])
+SLA Fulfilment % = DIVIDE(SUM(fact_assistance_request[FulfilledWithinSla]), [Assistance Requests])
+Open Requests = COUNTROWS(FILTER(fact_assistance_request, ISBLANK(fact_assistance_request[ClosedTimestamp])))
+Open Work Orders = COUNTROWS(FILTER(fact_asset_workorder, ISBLANK(fact_asset_workorder[CompletedDate])))
 ```
 
 ### 4. Report

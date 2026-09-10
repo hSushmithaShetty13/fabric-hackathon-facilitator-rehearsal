@@ -36,9 +36,12 @@ The scenario folder intentionally contains six CSV files, with the shared `calen
 | `dim_station` | Dimension | Clean names, join to regions |
 | `dim_region` | Dimension | Region lookup |
 | `dim_tariff` | Dimension | Energy rates for cost measures |
-| `fact_station_daily` | Fact | Daily station energy, passengers, tariff, and weather |
-| `fact_assistance_requests` | Fact | Daily request count and SLA performance |
-| `fact_asset_workorders` | Fact | Work order status and repair cost |
+| `fact_station_day` | Fact | Daily station energy, passengers, tariff, and weather |
+| `fact_assistance_request` | Fact | Daily request count and SLA performance |
+| `fact_asset_workorder` | Fact | Work order status and repair cost |
+| `gold_station_intervention_score` | Report-ready summary | Optional table for the final top-three ranking page |
+
+Use only these Gold tables in the Power BI semantic model. Bronze tables are raw landing tables, and Silver tables are cleaned intermediate tables for transparency and troubleshooting.
 
 ## Suggested quality checks
 
