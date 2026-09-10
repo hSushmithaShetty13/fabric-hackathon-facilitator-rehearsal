@@ -108,7 +108,33 @@ Build three pages:
 | Diagnostics | Find data or operational issues | Matrix by station and date, quality flags, orphan station references |
 | Station detail | Drill-through story | Daily trend, request type breakdown, work order list, weather context |
 
-### 5. Quick pass criteria
+### 5. Optional publish step: Fabric Org App
+
+This is **not required** for the 5-minute demo. It is useful if you want to test the full stakeholder-consumption path after the report is built.
+
+Use it when:
+
+- You want to validate report permissions before the hackathon.
+- You want to show how a finished report would be packaged for consumers.
+- You have enough time after the core report is working.
+
+Skip it when:
+
+- You are still fixing ingestion, modelling, or measures.
+- The demo is only a workspace walkthrough.
+- You do not want to spend time on app audience/access settings.
+
+Suggested quick test:
+
+1. Create the Power BI report from the Gold semantic model.
+2. Save the report in the Fabric workspace.
+3. Create or update a Fabric Org App.
+4. Add the report to the app.
+5. Set the audience to only yourself or the facilitator group.
+6. Publish the app and open it from the app link.
+7. Confirm slicers, drill-through, and top-three station ranking still work.
+
+### 6. Quick pass criteria
 
 The rehearsal is successful if you can:
 
@@ -116,6 +142,7 @@ The rehearsal is successful if you can:
 - Explain every join and one data-quality issue.
 - Produce a ranked top-three station intervention list.
 - Demo the result in five minutes.
+- Optionally publish the report as a Fabric Org App and open it as a consumer.
 
 ## Suggested Copilot prompts
 
