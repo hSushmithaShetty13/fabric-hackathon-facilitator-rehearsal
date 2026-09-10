@@ -10,6 +10,7 @@ The scenario is intentionally separate from the participant datasets: it focuses
 - `facilitator_rehearsal\datasets\station_energy_assistance\` - six synthetic scenario CSVs
 - `facilitator_rehearsal\quick-test-guide.md` - fastest way to validate the end-to-end Fabric build
 - `facilitator_rehearsal\data-dictionary.md` - table descriptions, joins, quirks, and suggested measures
+- `facilitator_rehearsal\participant_scenario_checks\` - facilitator-only answer keys for the four original participant scenarios
 - `tools\generate_station_energy_assistance.py` - deterministic dataset generator
 
 ## Clear goal
