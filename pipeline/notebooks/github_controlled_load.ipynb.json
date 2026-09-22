@@ -39,7 +39,7 @@
         "started_at = datetime.now(timezone.utc)\n",
         "normalized_load_type = load_type.strip().upper()\n",
         "merge_keys = [column.strip() for column in key_columns.split(\"|\") if column.strip()]\n",
-        "watermark_column = watermark_column.strip()\n",
+        "watermark_column = (watermark_column or \"\").strip()\n",
         "\n",
         "if normalized_load_type not in {\"TRUNCATE\", \"INCREMENTAL\"}:\n",
         "    raise ValueError(f\"Unsupported load_type: {load_type}\")\n",

@@ -176,7 +176,7 @@
               "typeProperties": {
                 "notebookId": "be7e3203-bee4-40b8-905e-470f97a565f9",
                 "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
-                "notebookParameters": {
+                "parameters": {
                   "entity_name": {
                     "value": {"value": "@item().entity_name", "type": "Expression"},
                     "type": "string"
