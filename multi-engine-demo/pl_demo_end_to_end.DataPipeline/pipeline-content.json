@@ -63,6 +63,7 @@
             "annotations": [],
             "type": "DataWarehouse",
             "typeProperties": {
+              "endpoint": "xixd7xfz54kurayrqp4zf3cx3m-ac6wdx7lzp3ubez2it4uj5hzuq.datawarehouse.fabric.microsoft.com",
               "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
               "artifactId": "3c3ff6bf-2d9b-4f9f-b914-6a6e6e37e055"
             }
