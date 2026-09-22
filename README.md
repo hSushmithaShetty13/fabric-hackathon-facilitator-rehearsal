@@ -12,6 +12,8 @@ The scenario is intentionally separate from the participant datasets: it focuses
 - `facilitator_rehearsal\data-dictionary.md` - table descriptions, joins, quirks, and suggested measures
 - `facilitator_rehearsal\participant_scenario_checks\` - facilitator-only answer keys for the four original participant scenarios
 - `multi-engine-demo\` - isolated Pipeline-to-Lakehouse, Dataflow-to-Lakehouse, and stored-procedure-to-Warehouse teaching solution with audit and data-quality monitoring
+- `presentations\fabric_architecture_three_solutions.pptx` - editable architecture deck comparing the Simple approach, Solution 2, and Solution 3
+- `presentations\fabric_architecture_three_solutions.pdf` - PDF handout version of the architecture deck
 - `tools\generate_station_energy_assistance.py` - deterministic dataset generator
 
 ## Clear goal
