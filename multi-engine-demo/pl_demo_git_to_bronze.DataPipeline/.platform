@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "pl_demo_git_to_bronze",
+    "description": "Uses a Git-hosted control manifest to copy CSV files sequentially into the isolated Bronze Lakehouse."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b0438ce6-919e-4a68-89a8-e07a8e7d0135"
+  }
+}

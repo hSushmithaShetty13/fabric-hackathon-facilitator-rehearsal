@@ -11,6 +11,7 @@ The scenario is intentionally separate from the participant datasets: it focuses
 - `facilitator_rehearsal\quick-test-guide.md` - fastest way to validate the end-to-end Fabric build
 - `facilitator_rehearsal\data-dictionary.md` - table descriptions, joins, quirks, and suggested measures
 - `facilitator_rehearsal\participant_scenario_checks\` - facilitator-only answer keys for the four original participant scenarios
+- `multi-engine-demo\` - isolated Pipeline-to-Lakehouse, Dataflow-to-Lakehouse, and stored-procedure-to-Warehouse teaching solution with audit and data-quality monitoring
 - `tools\generate_station_energy_assistance.py` - deterministic dataset generator
 
 ## Clear goal

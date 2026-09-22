@@ -1,0 +1,8 @@
+enabled,entity_name,source_relative_path,target_table,load_type,key_columns,watermark_column
+true,calendar,facilitator_rehearsal/datasets/calendar.csv,bronze_calendar,TRUNCATE,Date,
+true,regions,facilitator_rehearsal/datasets/station_energy_assistance/regions.csv,bronze_regions,TRUNCATE,RegionID,
+true,stations,facilitator_rehearsal/datasets/station_energy_assistance/stations.csv,bronze_stations,TRUNCATE,StationID,
+true,tariffs,facilitator_rehearsal/datasets/station_energy_assistance/tariffs.csv,bronze_tariffs,TRUNCATE,TariffBand,
+true,station_daily,facilitator_rehearsal/datasets/station_energy_assistance/station_daily.csv,bronze_station_daily,INCREMENTAL,Date|StationID,Date
+true,assistance_requests,facilitator_rehearsal/datasets/station_energy_assistance/assistance_requests.csv,bronze_assistance_requests,INCREMENTAL,Date|StationID|RequestType|OpenedTimestamp,
+true,asset_workorders,facilitator_rehearsal/datasets/station_energy_assistance/asset_workorders.csv,bronze_asset_workorders,INCREMENTAL,WorkOrderID,

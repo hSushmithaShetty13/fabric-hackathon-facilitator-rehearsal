@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Run Dynamic Git to Bronze",
+        "type": "ExecutePipeline",
+        "dependsOn": [],
+        "policy": {
+          "secureInput": false
+        },
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "e99f5fa9-ce72-4de7-a36b-cf2d78d0e3a4",
+            "type": "PipelineReference"
+          },
+          "waitOnCompletion": true
+        }
+      },
+      {
+        "name": "Clean Bronze to Silver with Dataflow",
+        "type": "RefreshDataflow",
+        "dependsOn": [
+          {"activity": "Run Dynamic Git to Bronze", "dependencyConditions": ["Succeeded"]}
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "typeProperties": {
+          "dataflowId": "8512a02e-02f8-45d0-a599-1140ad75c3d3",
+          "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+          "notifyOption": "NoNotification"
+        }
+      },
+      {
+        "name": "Load Gold and Audit",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {"activity": "Clean Bronze to Silver with Dataflow", "dependencyConditions": ["Succeeded"]}
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[etl].[usp_load_gold]",
+          "storedProcedureParameters": {
+            "run_id": {
+              "value": {"value": "@pipeline().RunId", "type": "Expression"},
+              "type": "String"
+            }
+          }
+        },
+        "linkedService": {
+          "name": "wh_storedproc_gold",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+              "artifactId": "3c3ff6bf-2d9b-4f9f-b914-6a6e6e37e055"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

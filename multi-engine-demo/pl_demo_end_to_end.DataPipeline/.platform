@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "pl_demo_end_to_end",
+    "description": "Orchestrates Pipeline-based Bronze ingestion, Dataflow Gen2 Silver cleansing, and stored-procedure Gold loading."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c6bf56b5-0bc5-4896-8427-c0a5f593697f"
+  }
+}

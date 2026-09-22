@@ -1,0 +1,29 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {},
+  "name": "df_demo_bronze_to_silver",
+  "allowNativeQueries": false,
+  "queriesMetadata": {
+    "silver_calendar": {"queryName": "silver_calendar", "queryId": "54856013-a304-4532-8080-9920147e6848", "loadEnabled": true},
+    "silver_calendar_DataDestination": {"queryName": "silver_calendar_DataDestination", "queryId": "67bdbf39-0da0-4431-acd8-7892fd58f29e", "isHidden": true, "loadEnabled": false},
+    "silver_regions": {"queryName": "silver_regions", "queryId": "d939cd9a-ea12-414b-9666-53dffb8ef4ac", "loadEnabled": true},
+    "silver_regions_DataDestination": {"queryName": "silver_regions_DataDestination", "queryId": "8b1216c6-260b-433d-9690-1011967924dc", "isHidden": true, "loadEnabled": false},
+    "silver_stations": {"queryName": "silver_stations", "queryId": "f5c20c80-843d-4637-a756-e9488782ea60", "loadEnabled": true},
+    "silver_stations_DataDestination": {"queryName": "silver_stations_DataDestination", "queryId": "285438ba-8ea1-477a-814b-3cfc6fb6c567", "isHidden": true, "loadEnabled": false},
+    "silver_tariffs": {"queryName": "silver_tariffs", "queryId": "98ac54c1-6ed9-44e8-b211-d08da2862d94", "loadEnabled": true},
+    "silver_tariffs_DataDestination": {"queryName": "silver_tariffs_DataDestination", "queryId": "123bd096-2b09-4192-96d7-f58c4733419d", "isHidden": true, "loadEnabled": false},
+    "silver_station_daily": {"queryName": "silver_station_daily", "queryId": "30344086-1627-4c0d-b693-2da02b33d801", "loadEnabled": true},
+    "silver_station_daily_DataDestination": {"queryName": "silver_station_daily_DataDestination", "queryId": "59d99f00-b33a-4c31-aa75-0ef395fa7f5b", "isHidden": true, "loadEnabled": false},
+    "silver_assistance_requests": {"queryName": "silver_assistance_requests", "queryId": "ec1d0a95-98eb-40e6-838e-209308cba5de", "loadEnabled": true},
+    "silver_assistance_requests_DataDestination": {"queryName": "silver_assistance_requests_DataDestination", "queryId": "3c69a274-6052-409e-a67b-1de36f88baf0", "isHidden": true, "loadEnabled": false},
+    "silver_asset_workorders": {"queryName": "silver_asset_workorders", "queryId": "254008fa-718b-468a-ac0e-1119885020d0", "loadEnabled": true},
+    "silver_asset_workorders_DataDestination": {"queryName": "silver_asset_workorders_DataDestination", "queryId": "fc2ff43a-f962-4c6b-97c2-785e222144bc", "isHidden": true, "loadEnabled": false}
+  },
+  "connections": [
+    {
+      "connectionId": "{\"ClusterId\": \"3be95fe4-5db5-4971-aa91-ddcf20673ba5\", \"DatasourceId\": \"f1dedb90-d8af-4a14-9c7f-7cc2abf595d8\"}",
+      "kind": "Lakehouse",
+      "path": "Lakehouse"
+    }
+  ]
+}

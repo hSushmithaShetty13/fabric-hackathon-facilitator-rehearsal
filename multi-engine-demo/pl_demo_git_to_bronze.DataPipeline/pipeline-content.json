@@ -1,0 +1,210 @@
+{
+  "properties": {
+    "parameters": {
+      "p_control_relative_url": {
+        "type": "String",
+        "defaultValue": "hSushmithaShetty13/fabric-hackathon-facilitator-rehearsal/main/multi-engine-demo/control/load_control.csv"
+      },
+      "p_repo_relative_root": {
+        "type": "String",
+        "defaultValue": "hSushmithaShetty13/fabric-hackathon-facilitator-rehearsal/main/"
+      },
+      "p_landing_folder": {
+        "type": "String",
+        "defaultValue": "landing"
+      }
+    },
+    "activities": [
+      {
+        "name": "Read Bronze Load Control",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {"type": "HttpReadSettings", "requestMethod": "GET"},
+            "formatSettings": {"type": "DelimitedTextReadSettings"}
+          },
+          "datasetSettings": {
+            "annotations": [],
+            "type": "DelimitedText",
+            "typeProperties": {
+              "location": {
+                "type": "HttpServerLocation",
+                "relativeUrl": {
+                  "value": "@pipeline().parameters.p_control_relative_url",
+                  "type": "Expression"
+                }
+              },
+              "columnDelimiter": ",",
+              "escapeChar": "\\",
+              "firstRowAsHeader": true,
+              "quoteChar": "\""
+            },
+            "schema": [],
+            "externalReferences": {"connection": "d032115f-0ad6-49fd-a6a6-327d5fd5ad72"}
+          },
+          "firstRowOnly": false
+        }
+      },
+      {
+        "name": "Filter Enabled Bronze Loads",
+        "type": "Filter",
+        "dependsOn": [
+          {"activity": "Read Bronze Load Control", "dependencyConditions": ["Succeeded"]}
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('Read Bronze Load Control').output.value",
+            "type": "Expression"
+          },
+          "condition": {
+            "value": "@equals(toLower(item().enabled), 'true')",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "For Each Enabled Bronze Load",
+        "type": "ForEach",
+        "dependsOn": [
+          {"activity": "Filter Enabled Bronze Loads", "dependencyConditions": ["Succeeded"]}
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('Filter Enabled Bronze Loads').output.value",
+            "type": "Expression"
+          },
+          "isSequential": true,
+          "activities": [
+            {
+              "name": "Copy Git CSV to Bronze Files",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.01:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "BinarySource",
+                  "storeSettings": {"type": "HttpReadSettings", "requestMethod": "GET"},
+                  "formatSettings": {"type": "BinaryReadSettings"},
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "HttpServerLocation",
+                        "relativeUrl": {
+                          "value": "@concat(pipeline().parameters.p_repo_relative_root, item().source_relative_path)",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "externalReferences": {"connection": "d032115f-0ad6-49fd-a6a6-327d5fd5ad72"}
+                  }
+                },
+                "sink": {
+                  "type": "BinarySink",
+                  "storeSettings": {"type": "LakehouseWriteSettings", "copyBehavior": "PreserveHierarchy"},
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@concat(pipeline().parameters.p_landing_folder, '/', item().entity_name)",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(item().entity_name, '.csv')",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "linkedService": {
+                      "name": "lh_git_bronze",
+                      "properties": {
+                        "annotations": [],
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+                          "artifactId": "3f5f38ac-8b47-480b-b6a8-588b2b340733",
+                          "rootFolder": "Files"
+                        }
+                      }
+                    }
+                  }
+                },
+                "enableStaging": false
+              }
+            },
+            {
+              "name": "Load Raw CSV to Bronze Delta",
+              "type": "TridentNotebook",
+              "dependsOn": [
+                {"activity": "Copy Git CSV to Bronze Files", "dependencyConditions": ["Succeeded"]}
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 1,
+                "retryIntervalInSeconds": 60,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "typeProperties": {
+                "notebookId": "30a9e966-3e9a-4555-9bfb-307263c1bde2",
+                "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+                "parameters": {
+                  "entity_name": {
+                    "value": {"value": "@item().entity_name", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "source_file_path": {
+                    "value": {
+                      "value": "@concat('Files/', pipeline().parameters.p_landing_folder, '/', item().entity_name, '/', item().entity_name, '.csv')",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "target_table": {
+                    "value": {"value": "@item().target_table", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "load_type": {
+                    "value": {"value": "@item().load_type", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "key_columns": {
+                    "value": {"value": "@item().key_columns", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "watermark_column": {
+                    "value": {"value": "@item().watermark_column", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "batch_id": {
+                    "value": {"value": "@pipeline().RunId", "type": "Expression"},
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
