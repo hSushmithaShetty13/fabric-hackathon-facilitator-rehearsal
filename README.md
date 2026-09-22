@@ -14,6 +14,7 @@ The scenario is intentionally separate from the participant datasets: it focuses
 - `multi-engine-demo\` - isolated Pipeline-to-Lakehouse, Dataflow-to-Lakehouse, and stored-procedure-to-Warehouse teaching solution with audit and data-quality monitoring
 - `presentations\fabric_architecture_three_solutions.pptx` - editable architecture deck comparing the Simple approach, Solution 2, and Solution 3
 - `presentations\fabric_architecture_three_solutions.pdf` - PDF handout version of the architecture deck
+- `presentations\fabric_architecture_speaker_notes.md` - slide-by-slide talk track covering the data, business goal, and three delivery approaches
 - `tools\generate_station_energy_assistance.py` - deterministic dataset generator
 
 ## Clear goal
