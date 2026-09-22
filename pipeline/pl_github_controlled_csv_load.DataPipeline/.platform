@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "pl_github_controlled_csv_load",
+    "description": "Loads enabled GitHub CSV files into Lakehouse Delta tables using control-driven truncate or incremental semantics."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5f8646c4-a204-4f6b-9dfd-020e4c249d5e"
+  }
+}

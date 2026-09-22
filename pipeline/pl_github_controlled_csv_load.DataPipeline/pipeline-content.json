@@ -1,0 +1,219 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Read Load Control",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {
+              "type": "HttpReadSettings",
+              "requestMethod": "GET"
+            },
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            }
+          },
+          "datasetSettings": {
+            "annotations": [],
+            "type": "DelimitedText",
+            "typeProperties": {
+              "location": {
+                "type": "HttpServerLocation",
+                "relativeUrl": "hSushmithaShetty13/fabric-hackathon-facilitator-rehearsal/main/pipeline/control/load_control.csv"
+              },
+              "columnDelimiter": ",",
+              "escapeChar": "\\",
+              "firstRowAsHeader": true,
+              "quoteChar": "\""
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "d032115f-0ad6-49fd-a6a6-327d5fd5ad72"
+            }
+          },
+          "firstRowOnly": false
+        }
+      },
+      {
+        "name": "Filter Enabled Loads",
+        "type": "Filter",
+        "dependsOn": [
+          {
+            "activity": "Read Load Control",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('Read Load Control').output.value",
+            "type": "Expression"
+          },
+          "condition": {
+            "value": "@equals(toLower(item().enabled), 'true')",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "For Each Enabled Load",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "Filter Enabled Loads",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('Filter Enabled Loads').output.value",
+            "type": "Expression"
+          },
+          "isSequential": true,
+          "activities": [
+            {
+              "name": "Copy GitHub CSV to Lakehouse",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.01:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "BinarySource",
+                  "storeSettings": {
+                    "type": "HttpReadSettings",
+                    "requestMethod": "GET"
+                  },
+                  "formatSettings": {
+                    "type": "BinaryReadSettings"
+                  },
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "HttpServerLocation",
+                        "relativeUrl": {
+                          "value": "@concat('hSushmithaShetty13/fabric-hackathon-facilitator-rehearsal/main/', item().source_relative_path)",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "externalReferences": {
+                      "connection": "d032115f-0ad6-49fd-a6a6-327d5fd5ad72"
+                    }
+                  }
+                },
+                "sink": {
+                  "type": "BinarySink",
+                  "storeSettings": {
+                    "type": "LakehouseWriteSettings",
+                    "copyBehavior": "PreserveHierarchy"
+                  },
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@concat('landing/', item().entity_name)",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(item().entity_name, '.csv')",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "linkedService": {
+                      "name": "lh_station_ops",
+                      "properties": {
+                        "annotations": [],
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+                          "artifactId": "a3df644b-8967-42eb-af61-255d9c782e3b",
+                          "rootFolder": "Files"
+                        }
+                      }
+                    }
+                  }
+                },
+                "enableStaging": false
+              }
+            },
+            {
+              "name": "Load CSV to Delta",
+              "type": "TridentNotebook",
+              "dependsOn": [
+                {
+                  "activity": "Copy GitHub CSV to Lakehouse",
+                  "dependencyConditions": ["Succeeded"]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 1,
+                "retryIntervalInSeconds": 60,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "typeProperties": {
+                "notebookId": "be7e3203-bee4-40b8-905e-470f97a565f9",
+                "workspaceId": "df61bd00-cbeb-40f7-933a-44f944f4f9a4",
+                "notebookParameters": {
+                  "entity_name": {
+                    "value": {"value": "@item().entity_name", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "source_file_path": {
+                    "value": {
+                      "value": "@concat('Files/landing/', item().entity_name, '/', item().entity_name, '.csv')",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "target_table": {
+                    "value": {"value": "@item().target_table", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "load_type": {
+                    "value": {"value": "@item().load_type", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "key_columns": {
+                    "value": {"value": "@item().key_columns", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "watermark_column": {
+                    "value": {"value": "@item().watermark_column", "type": "Expression"},
+                    "type": "string"
+                  },
+                  "batch_id": {
+                    "value": {"value": "@pipeline().RunId", "type": "Expression"},
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
